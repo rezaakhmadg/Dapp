@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 
-const CONTRACT_ADDRESS = "0x427EE58a6c574032085AEB90Dd05dEea6F054930";
+const CONTRACT_ADDRESS = "0x90bDDb7B71a81784adCA84447a4D06A18a9d3516";
 const CONTRACT_ABI = [
   "function getGreeting() public view returns (string)",
   "function setGreeting(string memory _greeting) public"
@@ -17,19 +17,19 @@ export async function getGreeting() {
 export async function setGreeting(newGreeting) {
   if (!window.ethereum) return;
 
+  const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+  console.log("Connected Metamask:", accounts[0]);
+
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const signer = provider.getSigner();
+  const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+
   try {
-    const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
-    console.log("Connected account:", accounts[0]);
-
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const signer = provider.getSigner();
-    const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
-
     const tx = await contract.setGreeting(newGreeting);
-    console.log("Transaction sent:", tx.hash);
+    console.log("TX sent:", tx.hash);
     await tx.wait();
-    console.log("Transaction confirmed");
+    console.log("TX confirmed");
   } catch (err) {
-    console.error("Metamask or contract error:", err);
+    console.error("Tx failed or rejected:", err);
   }
 }

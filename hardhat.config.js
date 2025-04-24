@@ -1,11 +1,12 @@
-require("@nomicfoundation/hardhat-toolbox");
+require("@nomicfoundation/hardhat-ethers");
 
 module.exports = {
   solidity: "0.8.20",
   networks: {
-    blocktopus: {
-      url: "https://60df3bbba02e4cc48c0f41434128bddb-rpc.prod.bloctopus.io", // replace this
-      accounts: ["ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80"] // will add this next
+    arbitrum: {
+      url: "https://21eb2a0357bb4e2383796a6ec22dc6d2-rpc.prod.bloctopus.io",  // ✅ paste the new RPC URL from Blocktopus
+      chainId: 2615866, // ✅ or whatever Chain ID Blocktopus shows (this is Arbitrum testnet default)
+      accounts: ["0x7d693de64287762eb2f808ca8c1859e8e9e327524974a235fabc1b1862ee0b67"] // ✅ wallet must have test ETH on this network
     }
   }
 };
