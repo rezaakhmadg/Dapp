@@ -19,12 +19,14 @@ export async function getGreeting() {
 }
 
 export async function setGreeting(newGreeting) {
-  const provider = new ethers.providers.JsonRpcProvider(RPC_URL);
-  const wallet = new ethers.Wallet(PRIVATE_KEY, provider);
-  const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, wallet);
+  if (!window.ethereum) return;
 
-  console.log("Submitting tx via wallet:", wallet.address);
+  await window.ethereum.request({ method: 'eth_requestAccounts' });
+
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const signer = provider.getSigner();
+  const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+
   const tx = await contract.setGreeting(newGreeting);
   await tx.wait();
-  console.log("Tx confirmed:", tx.hash);
 }
