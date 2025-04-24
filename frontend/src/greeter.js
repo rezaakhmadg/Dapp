@@ -6,14 +6,10 @@ const CONTRACT_ABI = [
   "function setGreeting(string memory _greeting) public"
 ];
 
-// PRIVATE KEY: Get this from the same wallet you deployed with on Blocktopus
-const PRIVATE_KEY = "0x7d693de64287762eb2f808ca8c1859e8e9e327524974a235fabc1b1862ee0b67"; // ⚠️ TESTNET ONLY
-
-// RPC URL from your Blocktopus environment
-const RPC_URL = "https://60df3bbba02e4cc48c0f41434128bddb-rpc.prod.bloctopus.io";
-
 export async function getGreeting() {
-  const provider = new ethers.providers.JsonRpcProvider(RPC_URL);
+  if (!window.ethereum) return "No wallet detected";
+
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
   const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, provider);
   return await contract.getGreeting();
 }
@@ -21,7 +17,7 @@ export async function getGreeting() {
 export async function setGreeting(newGreeting) {
   if (!window.ethereum) return;
 
-  await window.ethereum.request({ method: 'eth_requestAccounts' });
+  await window.ethereum.request({ method: "eth_requestAccounts" });
 
   const provider = new ethers.providers.Web3Provider(window.ethereum);
   const signer = provider.getSigner();
