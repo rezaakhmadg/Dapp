@@ -18,21 +18,18 @@ function App() {
   console.log("Form submitted with:", input);
   const handleSubmit = async (e) => {
     e.preventDefault();
+  
     if (!input.trim()) return;
   
     console.log("Form submitted with:", input);
   
     try {
-      console.log("Calling setGreeting()...");
       await setGreeting(input);
-      console.log("Greeting was set");
-  
       const updated = await getGreeting();
-      console.log("Greeting after tx:", updated);
       setGreetingText(updated);
       setInput("");
     } catch (err) {
-      console.error("Error during greeting update:", err);
+      console.error("Failed to update greeting:", err);
     }
   };
 
