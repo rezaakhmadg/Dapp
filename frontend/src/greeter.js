@@ -1,28 +1,28 @@
-import { BrowserProvider, Contract } from "ethers";
+import { ethers } from "ethers";
 
-const CONTRACT_ADDRESS = "0xbd63F3Eb3272195Cc97448fC2f686Cabb2b8D6ce"; // <-- Make sure this is your latest deployed address
+const CONTRACT_ADDRESS = "0xbd63F3Eb3272195Cc97448fC2f686Cabb2b8D6ce"; // <-- your deployed address
 const CONTRACT_ABI = [
-  "function getGreeting() view returns (string)",
-  "function setGreeting(string _greeting)"
+  "function getGreeting() public view returns (string)",
+  "function setGreeting(string memory _greeting) public"
 ];
 
 export async function getGreeting() {
   if (!window.ethereum) return "No wallet detected";
 
-  const provider = new BrowserProvider(window.ethereum); // ✅ ethers v6 BrowserProvider
-  const contract = new Contract(CONTRACT_ADDRESS, CONTRACT_ABI, provider); // ✅ ethers v6 Contract
+  const provider = new ethers.providers.Web3Provider(window.ethereum); // ✅
+  const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, provider);
   return await contract.getGreeting();
 }
 
 export async function setGreeting(newGreeting) {
   if (!window.ethereum) return;
+  await window.ethereum.request({ method: "eth_requestAccounts" });
 
-  const provider = new BrowserProvider(window.ethereum); // ✅
-  const signer = await provider.getSigner(); // ✅ await is needed
-  const contract = new Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer); // ✅
+  const provider = new ethers.providers.Web3Provider(window.ethereum); // ✅
+  const signer = provider.getSigner(); // ✅ no `await`
+  const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
 
   console.log("Submitting tx via wallet...");
-  const tx = await contract.setGreeting(newGreeting); // ✅
+  const tx = await contract.setGreeting(newGreeting);
   await tx.wait();
-  console.log("Greeting updated on-chain!");
 }
