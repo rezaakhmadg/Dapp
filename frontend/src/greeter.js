@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 
-const CONTRACT_ADDRESS = "0xA03446A03f864D16ec536bF54f056cDE85e056b1";
+const CONTRACT_ADDRESS = "0xbd63F3Eb3272195Cc97448fC2f686Cabb2b8D6ce";
 const CONTRACT_ABI = [
   "function getGreeting() public view returns (string)",
   "function setGreeting(string memory _greeting) public"
@@ -18,11 +18,11 @@ export async function setGreeting(newGreeting) {
   if (!window.ethereum) return;
   await window.ethereum.request({ method: "eth_requestAccounts" });
 
-  const provider = new ethers.BrowserProvider(window.ethereum);
-  const signer = await provider.getSigner();
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const signer = provider.getSigner();
   const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
 
-  console.log("Submitting tx via wallet:", signer.address);
+  console.log("Submitting tx via wallet:", await signer.getAddress());
   const tx = await contract.setGreeting(newGreeting);
   await tx.wait();
 }
