@@ -16,20 +16,13 @@ export async function getGreeting() {
 
 export async function setGreeting(newGreeting) {
   if (!window.ethereum) return;
+  await window.ethereum.request({ method: "eth_requestAccounts" });
 
-  const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
-  console.log("Connected Metamask:", accounts[0]);
-
-  const provider = new ethers.providers.Web3Provider(window.ethereum);
-  const signer = provider.getSigner();
+  const provider = new ethers.BrowserProvider(window.ethereum);
+  const signer = await provider.getSigner();
   const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
 
-  try {
-    const tx = await contract.setGreeting(newGreeting);
-    console.log("TX sent:", tx.hash);
-    await tx.wait();
-    console.log("TX confirmed");
-  } catch (err) {
-    console.error("Tx failed or rejected:", err);
-  }
+  console.log("Submitting tx via wallet:", signer.address);
+  const tx = await contract.setGreeting(newGreeting);
+  await tx.wait();
 }
