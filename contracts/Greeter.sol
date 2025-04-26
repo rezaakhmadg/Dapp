@@ -1,14 +1,18 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.0;
 
 contract Greeter {
-    mapping(address => string) private greetings;
+    string public greeting;
+
+    constructor(string memory _greeting) {
+        greeting = _greeting;
+    }
 
     function setGreeting(string memory _greeting) public {
-        greetings[msg.sender] = _greeting;
+        greeting = _greeting;
     }
 
     function getGreeting() public view returns (string memory) {
-        return greetings[msg.sender];
+        return greeting;
     }
 }
