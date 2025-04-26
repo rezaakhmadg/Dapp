@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 
-const CONTRACT_ADDRESS = "0x90bDDb7B71a81784adCA84447a4D06A18a9d3516";
+const CONTRACT_ADDRESS = "0xfAebdEdf07A9493Bd42330C9102Ba6346eF21DcE";
 const CONTRACT_ABI = [
   "function getGreeting() public view returns (string)",
   "function setGreeting(string memory _greeting) public"
