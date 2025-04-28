@@ -1,20 +1,17 @@
-// scripts/deploy.js
 const hre = require("hardhat");
 
 async function main() {
-  console.log("🚀 Deploying Greeter contract...");
+  console.log("🚀 Deploying Greeter...");
 
-  const Greeter = await hre.ethers.getContractFactory("Greeter");
-  const greeter = await Greeter.deploy("Hello from Blocktopus!"); // initial greeting
-
-  console.log("📦 Waiting for contract to be deployed...");
+  const GreeterFactory = await hre.ethers.getContractFactory("Greeter");
+  const greeter = await GreeterFactory.deploy("Hello from Blocktopus!");
   await greeter.waitForDeployment();
 
-  const contractAddress = await greeter.getAddress();
-  console.log(`✅ Greeter deployed successfully at address: ${contractAddress}`);
+  const address = await greeter.getAddress();
+  console.log(`✅ Greeter deployed at: ${address}`);
 }
 
 main().catch((error) => {
-  console.error("❌ Deployment failed:", error);
+  console.error(error);
   process.exitCode = 1;
 });

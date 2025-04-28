@@ -1,6 +1,6 @@
 import { BrowserProvider, Contract } from "ethers";
 
-const CONTRACT_ADDRESS = "0xbd63F3Eb3272195Cc97448fC2f686Cabb2b8D6ce"; // Update if needed
+const CONTRACT_ADDRESS = "0x90bDDb7B71a81784adCA84447a4D06A18a9d3516"; // Update if needed
 const CONTRACT_ABI = [
   "function getGreeting() public view returns (string)",
   "function setGreeting(string memory _greeting) public"
